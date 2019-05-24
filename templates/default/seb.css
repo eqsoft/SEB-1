@@ -14,6 +14,7 @@ footer#ilFooter {
 	display: none;
 }
 
+/* todo */
 .ilContentFixed button {
 	display: none;
 }
@@ -22,102 +23,66 @@ footer#ilFooter {
 	display: none;
 }
 
-/* Using a fixed MainHeader with an user image and some options in kioskmode a kioskOption header */
-#ilAll > div#kioskOptions, #ilAll >  div.ilMainHeader, #ilAll > div.ilMainheader.ilTopFixed {
+/* Using a fixed TopBar with an user image and some options in kioskmode header */
+#sebKioskTopBar {
 	position: fixed;
 	left: 0px;
 	top: 0px;
-	height: 112px;
 	width: 100%;
-	padding-left: 30px;
-	padding-right: 30px;
-	padding-top: 0px;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-around;
 	border-top: 0px;
 	border-bottom: 0 solid #fff;
 	font-weight: bold;
 	font-size: 1.2em;
-	background-color: #661616;
+	background-color: #434343;
 	color: white;
-	z-index: 1000;
-	box-shadow: 0 8px 6px -6px black;
+    z-index: 1000;
 }
 
-#sebUsrImg {
-	float: right;
-}
+/* from left to right */
 
-#sebUsrImg img {
-	height: 100px;
-	margin: 6px 0;
-}
-
+/* image only displayed if not processing the test object */
 #sebBrand img {
-	height: 92px;
-	width: 100px;
-	margin: 6px 0;
-	position: relative;
-	display: inline-block;
+	height: 40px;
+	width: 40px;
 }
 
-#sebUsrImg, #sebBrand {
-	position: relative;
-	z-index: 100;
-	margin: 0;
-	height: auto;
-	display: inline-block;
-	padding: 0;
+#sebKioskTestTitle, #sebKioskExamID, #sebKioskExamID {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
-#ilAll .ilMainHeader > header > .row > a.navbar-brand > img {
-	height: 92px;
-	width: 100px;
-	margin: 6px 0;
-	position: relative;
+#sebKioskParticipant {
+    white-space: nowrap;
+    overflow: visible;
+    text-overflow: ellipsis;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
-#sebLangSelect {
-	background: #fff;
-}
-
-#sebLangSelect ul {
-	width: 100%;
-	text-align: center;
-	background-color: transparent;
-	padding: 0px;
-	left: 0px;
-}
-
-#sebLangSelect li {
-    width: 160px;
-    margin: 0 auto;
-    background: #fff;
-}
-
-#mm_lang_sel {
-	color: #661616;
-	text-decoration: none;
-}
-
-div#il_startup_logo.row {
-	height: 52px;
-	padding: 0;
-	margin-right:0;
-	margin-left:0;
-}
-
-#sebTestInfo {
-	position: absolute;
-	width: 100%;
-	left: 0;
-}
-
-#kioskParticipant, #kioskExamID, #kioskTestTitle, #sebLangSelect {
-	width: 100%;
-	text-align: center;
+#sebKioskLogo img {
+    height: 36px;
+	width: 36px;
 }
 
 #sebLogoutLink {
-    color: #F69696;
+  font: bold 12px Arial;
+  text-decoration: none;
+  background-color: #EEEEEE;
+  color: #333333;
+  padding: 2px 6px 2px 6px;
+  border-top: 1px solid #CCCCCC;
+  border-right: 1px solid #333333;
+  border-bottom: 1px solid #333333;
+  border-left: 1px solid #CCCCCC;
 }
 
 /* Login Section */
@@ -272,4 +237,8 @@ div.ilStartupSection > form {
 
 div.ilStartupSection > form .ilFormHeader {
 	background-color: white;
+}
+
+body.kiosk div.ilc_qtitle_Title {
+    font-size: 110%;
 }

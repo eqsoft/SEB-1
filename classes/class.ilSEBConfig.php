@@ -27,6 +27,7 @@ class ilSEBConfig {
     private static $instance;
     private $conf;
     private $db;
+    private $ua_key;
     
     public function checkSebKey($key, $url) {
         return $this->checkKeys($key, $this->conf['seb_keys'], $url);
@@ -131,6 +132,7 @@ class ilSEBConfig {
         if ($this->db->tableExists('ui_uihk_seb_conf')) {
             $this->readSEBConf();
         }
+        $this->ua_key = true;
     }
     
     public static function getInstance() {
@@ -242,12 +244,20 @@ class ilSEBConfig {
      * @return boolean True if key to check corresponds to a key in the array.
      */
     private function checkKeys($key, $keys, $url) {
-        foreach ($keys as $seb_key) {
-            if ($key == hash('sha256',$url . trim($seb_key))) {
-                return true;
+        if ($this->ua_key == true) {
+            foreach ($keys as $seb_key) {
+                if ($key == trim($seb_key)) {
+                    return true;
+                }
             }
         }
-        
+        else {
+            foreach ($keys as $seb_key) {
+                if ($key == hash('sha256',$url . trim($seb_key))) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 }

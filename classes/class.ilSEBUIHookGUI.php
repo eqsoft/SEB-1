@@ -67,6 +67,12 @@ class ilSEBUIHookGUI extends ilUIHookPluginGUI {
 	 * @return array Array defining the changes to be applied to the template of the current part ("mode" => modification mode, "html" => your html)
 	 */
 	function getHTML($a_comp, $a_part, $a_par = array()) {
+        // for rapid customizations a javascript is injected 
+        global $tpl;
+        if ($tpl && $a_par['tpl_id'] != 'tpl.main.html') {
+			$pl = $this->getPluginObject();
+			$tpl->addJavaScript($pl->getDirectory() . "/seb.js");
+		}
 		if (!isset(self::$_modifyGUI) && $a_par['tpl_id'] != 'tpl.main.html') {
 			$this->setModifyGUI();
 			
@@ -237,14 +243,17 @@ class ilSEBUIHookGUI extends ilUIHookPluginGUI {
 	private function switchToKiosk($is_tst_kiosk = false) {
 		global $DIC;
 		$user = $DIC->user();
-		$lang = $DIC->language();
+		
+        $lang = $DIC->language();
 
 		$DIC->ui()->mainTemplate()->addCss($this->plugin->getStyleSheetLocation('default/seb.css'));
 		
+        /*
 		$lang_select = ilMainMenuGUI::getLanguageSelection(true);
 		
 		$lang_select = str_replace("&", "&amp;", $lang_select);
-		
+		*/
+        
 		$tpl = $this->plugin->getTemplate('default/tpl.seb_header.html');
 		if ($this->conf->getShowPaxPic()) {
 			$tpl->setCurrentBlock('seb_usr_img');
@@ -254,12 +263,10 @@ class ilSEBUIHookGUI extends ilUIHookPluginGUI {
 		
 		$tpl->setCurrentBlock("kiosk_show_participant");
 		$tpl->setVariable("PARTICIPANT_NAME", $user->getFullname());
-		$tpl->setVariable("PARTICIPANT_LOGIN", $user->getLogin());
+		$tpl->setVariable("PARTICIPANT_LOGIN", " (" . $user->getLogin() . ", " . $user->getMatriculation() .  ")");
 		
 		$link_dir = (defined("ILIAS_MODULE")) ? "../" : "";
 		
-		$tpl->setVariable("SEB_LOGOUT_TEXT",$lang->txt("logout"));
-		$tpl->setVariable("SEB_LOGOUT_LINK", $link_dir."logout.php?lang=".$user->getCurrentLanguage());
 		$tpl->parseCurrentBlock();
 		
 		if ($is_tst_kiosk) {
@@ -283,14 +290,25 @@ class ilSEBUIHookGUI extends ilUIHookPluginGUI {
 				$tpl->parseCurrentBlock();
 			}
 		}
-		
+        else {
+            
+            $tpl->setCurrentBlock("seb_kiosk_logo");
+            $tpl->setVariable("LOGO_LINK","ilias.php?baseClass=ilPersonalDesktopGUI");
+            $tpl->setVariable("IMG_SRC",$this->plugin->getImagePath('seb_logo.png'));
+            $tpl->setVariable("IMG_ALT","Home");
+            $tpl->parseCurrentBlock();
+             
+            $tpl->setCurrentBlock("seb_kiosk_logout");
+            $tpl->setVariable("SEB_LOGOUT_TEXT",$lang->txt("logout"));
+            $tpl->setVariable("SEB_LOGOUT_LINK", $link_dir."logout.php?lang=".$user->getCurrentLanguage());
+            $tpl->parseCurrentBlock();
+        }
+		/*
 		$tpl->setCurrentBlock('seb_lang_select');
 		$tpl->setVariable("TXT_LANGSELECT", $lang->txt("language"));
 		$tpl->setVariable('SEB_LANG_SELECT', $lang_select);
 		$tpl->parseCurrentBlock();
-		
-		$tpl->parseCurrentBlock();
-		
+		*/
 		return $tpl->get();
 	}
 }
